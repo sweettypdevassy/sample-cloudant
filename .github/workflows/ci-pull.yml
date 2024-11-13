@@ -51,9 +51,9 @@ jobs:
             done
     -name: Initialize CouchDB System Databases
       run: |
-            curl -X PUT http://admin:password@localhost:5984/_users || echo "_users database already exists"
-            curl -X PUT http://admin:password@localhost:5984/_replicator || echo "_replicator database already exists"
-            curl -X PUT http://admin:password@localhost:5984/_global_changes || echo "_global_changes database already exists"
+        curl -X PUT http://admin:password@localhost:5984/_users || echo "_users database already exists"
+        curl -X PUT http://admin:password@localhost:5984/_replicator || echo "_replicator database already exists"
+        curl -X PUT http://admin:password@localhost:5984/_global_changes || echo "_global_changes database already exists"
     - name: Compile App and Tests
       run: |
            mvn -B compiler:compile
