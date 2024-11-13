@@ -51,18 +51,9 @@ jobs:
         done
     - name: Initialize CouchDB System Databases with Retry Loop
       run: |
-          for i in {1..5}; do
-            curl -X PUT http://admin:password@localhost:5984/_users && break || echo "Retrying _users creation..."
-            sleep 5
-          done
-          for i in {1..5}; do
-            curl -X PUT http://admin:password@localhost:5984/_replicator && break || echo "Retrying _replicator creation..."
-            sleep 5
-          done
-          for i in {1..5}; do
-            curl -X PUT http://admin:password@localhost:5984/_global_changes && break || echo "Retrying _global_changes creation..."
-            sleep 5
-          done
+          curl -X PUT http://admin:password@localhost:5984/_users
+          curl -X PUT http://admin:password@localhost:5984/_replicator
+          curl -X PUT http://admin:password@localhost:5984/_global_changes
     - name: Compile App and Tests
       run: |
            mvn -B compiler:compile
@@ -86,7 +77,3 @@ jobs:
         name: liberty-logs
         path: target/liberty/wlp/usr/servers/CloudantServer/logs/
         retention-days: 1
-    - name: Stop CouchDB Container Gracefully
-      run: |
-        docker stop $(docker ps -q --filter ancestor=couchdb)
-        echo "CouchDB container stopped."
