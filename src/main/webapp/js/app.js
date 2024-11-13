@@ -68,8 +68,8 @@ function addToDisplay(entry){
 					
 	var userDiv = document.createElement("div");
 	userDiv.setAttribute("class","user flexbox");
-	userDiv.setAttribute("id",entry._id.$oid);
-	userDiv.setAttribute("onclick","remove('"+entry._id.$oid+"')");
+	userDiv.setAttribute("id",entry._id);
+	userDiv.setAttribute("onclick","remove('"+entry._id+"')");
 	userDiv.innerHTML=userHtml;
 	document.getElementById("userBoxes").appendChild(userDiv);
 }
