@@ -11,5 +11,9 @@
 	<httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
 	<webApplication location="CloudantSample.war" contextRoot="/"/>
+	<variable name="cloudant.apikey" value="06OlfqxgOzqJxROirfQDCdW2ddIzHOs937npibdR6uX2"/>
+  	<variable name="cloudant.servicename" value="Cloudant-2t"/>
+  	<variable name="cloudant.host" value="7325d93c-d9ba-4770-9d70-2de6286ca891-bluemix.cloudantnosqldb.appdomain.cloud"/>
+    <variable name="cloudant.dbname" value="crew"/> <!-- Use admin to avoid configuring the container with users-->
 
 </server>
