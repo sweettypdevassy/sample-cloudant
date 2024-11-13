@@ -28,7 +28,7 @@ jobs:
             COUCHDB_PASSWORD: password
         # Set health checks to wait until mongo has started
         options: >-
-          --health-cmd "echo 'db.runCommand("ping").ok' | mongosh --quiet"
+          --health-cmd "curl -f http://localhost:5984/_up || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -36,6 +36,18 @@ jobs:
           - 5984:5984    
 
     steps:
+    # Start CouchDB and initialize required databases
+    - name: Wait for CouchDB to be ready
+        run: |
+          until curl -s -u admin:password http://localhost:5984/_up; do
+            echo "Waiting for CouchDB..."
+            sleep 5
+          done
+     - name: Create system databases
+        run: |
+          curl -X PUT http://admin:password@localhost:5984/_users
+          curl -X PUT http://admin:password@localhost:5984/_replicator
+          curl -X PUT http://admin:password@localhost:5984/_global_changes
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: Set up JDK 21
       uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4.5.0
