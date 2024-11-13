@@ -22,7 +22,7 @@ jobs:
     services:
       liberty_cloudant:
         #Update Readme to match
-        image: couchdb:latest
+        image: couchdb:3.2
         env:
             COUCHDB_USER: admin
             COUCHDB_PASSWORD: password
