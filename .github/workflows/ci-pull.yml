@@ -49,11 +49,20 @@ jobs:
           echo "Waiting for CouchDB..."
           sleep 5
         done
-    - name: Create system databases
+    - name: Initialize CouchDB System Databases with Retry Loop
       run: |
-        curl -X PUT http://admin:password@localhost:5984/_users || echo "_users database already exists"
-        curl -X PUT http://admin:password@localhost:5984/_replicator || echo "_replicator database already exists"
-        curl -X PUT http://admin:password@localhost:5984/_global_changes || echo "_global_changes database already exists"
+          for i in {1..5}; do
+            curl -X PUT http://admin:password@localhost:5984/_users && break || echo "Retrying _users creation..."
+            sleep 5
+          done
+          for i in {1..5}; do
+            curl -X PUT http://admin:password@localhost:5984/_replicator && break || echo "Retrying _replicator creation..."
+            sleep 5
+          done
+          for i in {1..5}; do
+            curl -X PUT http://admin:password@localhost:5984/_global_changes && break || echo "Retrying _global_changes creation..."
+            sleep 5
+          done
     - name: Compile App and Tests
       run: |
            mvn -B compiler:compile
