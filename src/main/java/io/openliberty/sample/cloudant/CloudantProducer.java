@@ -17,54 +17,64 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import com.ibm.cloud.cloudant.v1.Cloudant;
 import com.ibm.cloud.cloudant.v1.model.GetDatabaseInformationOptions;
 import com.ibm.cloud.cloudant.v1.model.PutDatabaseOptions;
-import com.ibm.cloud.sdk.core.security.IamAuthenticator;
+import com.ibm.cloud.sdk.core.security.BasicAuthenticator;
 import com.ibm.cloud.sdk.core.service.exception.NotFoundException;
 
 @ApplicationScoped
 public class CloudantProducer {
-    
+
     @Inject
-    @ConfigProperty(name = "cloudant.apikey") 
-    String apikey;
-    
+    @ConfigProperty(name = "cloudant.username")
+    String username;
+
     @Inject
-    @ConfigProperty(name = "cloudant.host", defaultValue = "localhost") 
+    @ConfigProperty(name = "cloudant.password")
+    String password;
+
+    @Inject
+    @ConfigProperty(name = "cloudant.host", defaultValue = "localhost")
     String host;
-    
+
     @Inject
-    @ConfigProperty(name = "cloudant.dbname") 
+    @ConfigProperty(name = "cloudant.dbname")
     String dbname;
+
+    @Inject
+    @ConfigProperty(name = "cloudant.port", defaultValue = "5984")
+    String port;
 
     @Produces
     public Cloudant createCloudant() {
-        IamAuthenticator authenticator = new IamAuthenticator.Builder()
-                .apikey(apikey)
+        BasicAuthenticator authenticator = new BasicAuthenticator.Builder()
+                .username(username)
+                .password(password)
                 .build();
 
         Cloudant service = new Cloudant(Cloudant.DEFAULT_SERVICE_NAME, authenticator);
-        service.setServiceUrl("https://" + host);
+        service.setServiceUrl("http://" + host + ":" + port);
 
         // Check if the database exists, if not, create it
         GetDatabaseInformationOptions dbInfoOptions = new GetDatabaseInformationOptions.Builder()
                 .db(dbname)
                 .build();
 
-        try {
-            service.getDatabaseInformation(dbInfoOptions).execute();
-            System.out.println("connected to existing database " + dbname );
-        } catch (NotFoundException e) {
-            PutDatabaseOptions dbOptions = new PutDatabaseOptions.Builder()
-                    .db(dbname)
-                    .build();
-            try{
-                service.putDatabase(dbOptions).execute();
-                System.out.println("Created new database " + dbname );
-            }catch(Exception c){
-                c.printStackTrace(System.out);
+                try {
+                    service.getDatabaseInformation(dbInfoOptions).execute();
+                    System.out.println("connected to existing database " + dbname );
+                } catch (NotFoundException e) {
+                    PutDatabaseOptions dbOptions = new PutDatabaseOptions.Builder()
+                            .db(dbname)
+                            .build();
+                    try{
+                        service.putDatabase(dbOptions).execute();
+                        System.out.println("Created new database " + dbname );
+                    }catch(Exception c){
+                        c.printStackTrace(System.out);
+                    }
+                    
+                }
+        
+                return service;
             }
-            
         }
-
-        return service;
-    }
-}
+        
