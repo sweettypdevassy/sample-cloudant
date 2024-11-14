@@ -24,6 +24,14 @@ import com.ibm.cloud.sdk.core.service.exception.NotFoundException;
 public class CloudantProducer {
 
     @Inject
+    @ConfigProperty(name = "cloudant.host", defaultValue = "localhost")
+    String host;
+
+    @Inject
+    @ConfigProperty(name = "cloudant.port", defaultValue = "5984")
+    String port;
+
+    @Inject
     @ConfigProperty(name = "cloudant.username")
     String username;
 
@@ -31,17 +39,10 @@ public class CloudantProducer {
     @ConfigProperty(name = "cloudant.password")
     String password;
 
-    @Inject
-    @ConfigProperty(name = "cloudant.host", defaultValue = "localhost")
-    String host;
 
     @Inject
     @ConfigProperty(name = "cloudant.dbname")
     String dbname;
-
-    @Inject
-    @ConfigProperty(name = "cloudant.port", defaultValue = "5984")
-    String port;
 
     @Produces
     public Cloudant createCloudant() {
