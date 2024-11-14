@@ -87,7 +87,7 @@ public class CrewService {
 		            .execute()
 		            .getResult();
 
-		return createDocumentResponse.toString();
+		return "";
 	}
 
 	@DELETE
