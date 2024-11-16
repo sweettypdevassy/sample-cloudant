@@ -65,7 +65,7 @@ public class CloudantIT {
             if (obj.getString("Name").equals("Test") &&
                 obj.getString("Rank").equals("Captain") &&
                 obj.getString("CrewID").equals("12345"))
-                id = obj.getJsonObject("_id").getString("$oid");
+                id = obj.getString("_id");
         }
         assertNotNull(id, "CrewMember not found in returned value: " + array);
 
@@ -76,8 +76,8 @@ public class CloudantIT {
         array = reader.readArray();
 
         for (JsonValue value : array) {
-            System.out.println(value.asJsonObject().getJsonObject("_id").getString("$oid"));
-            if (id == value.asJsonObject().getJsonObject("_id").getString("$oid"))
+            System.out.println(value.asJsonObject().getString("_id"));
+            if (id == value.asJsonObject().getString("_id"))
                 fail("CrewMember should have been deleted, but id was found: " + id);
         }
     }
