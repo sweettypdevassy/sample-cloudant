@@ -4,12 +4,12 @@
 name: Java CI with Maven on Pull
 
 on:
-  #pull_request: TODO enable after test passes
-  #  branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   push:
     branches: [ "actions"]  #Allows testing Actions changes in a fork
-  #schedule: TODO enable after test passes
-    #- cron: "0 12 * * 1-5"
+  schedule:
+    - cron: "0 12 * * 1-5"
 
 permissions:
   contents: read
