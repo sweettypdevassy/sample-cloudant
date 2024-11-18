@@ -7,7 +7,7 @@ To run this sample, first [download](https://github.com/OpenLiberty/sample-cloud
 git clone git@github.com:OpenLiberty/sample-cloudant.git
 ```
 ### Setup CouchDb
-You will also need a CouchDB instance to use this sample. If you have Docker installed, you can use the following:
+The Cloudant client is also compatible with CouchDb, which is needed for running the sample locally. If you have Docker installed, you can use the following:
 ```
 docker run -d --name liberty_cloudant -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password couchdb:3.4.2
 ```
@@ -25,9 +25,9 @@ Two more boxes will appear, one with your crew members (which you can click to r
 docker stop liberty_cloudant
 ```
 ### How it works
-This application uses a CDI producer ([CloudantProducer.java](https://github.com/OpenLiberty/sample-cloudant/blob/main/src/main/java/io/openliberty/sample/cloudant/CloudantProducer.java)) to inject a CouchDatabase. It provides access to the database in a RESTful manner in [CrewService.java](https://github.com/OpenLiberty/sample-cloudant/blob/main/src/main/java/io/openliberty/sample/application/CrewService.java) using the `/db/crew` endpoint.
+This application uses a CDI producer ([CloudantProducer.java](https://github.com/OpenLiberty/sample-cloudant/blob/main/src/main/java/io/openliberty/sample/cloudant/CloudantProducer.java)) to inject a Cloudant client. It provides access to the database in a RESTful manner in [CrewService.java](https://github.com/OpenLiberty/sample-cloudant/blob/main/src/main/java/io/openliberty/sample/application/CrewService.java) using the `/db/crew` endpoint.
 
-Calling `POST /{id}` on the endpoint uses [Jakarta Validation](https://openliberty.io/guides/bean-validation.html) to validate the data we receive from the front end. [CrewMember.java](https://github.com/OpenLiberty/sample-cloudant/blob/main/src/main/java/io/openliberty/sample/application/CrewMember.java) shows the constraints as well as the messages we return to the user if those constraints aren't met.
+Calling `POST /{id}` on the endpoint uses [Jakarta Validation](https://openliberty.io/guides/bean-validation.html) to validate the data received from the front end. [CrewMember.java](https://github.com/OpenLiberty/sample-cloudant/tree/master/src/main/java/io/openliberty/sample/application/CrewMember.java) shows the constraints as well as the messages we return to the user if those constraints aren't met.
 ```java
 @NotEmpty(message = "All crew members must have a name!")
 private String name;
