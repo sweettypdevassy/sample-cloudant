@@ -11,6 +11,7 @@
 package io.openliberty.sample.cloudant;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import com.ibm.websphere.crypto.PasswordUtil;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -37,7 +38,7 @@ public class CloudantProducer {
 
     @Inject
     @ConfigProperty(name = "cloudant.password")
-    String password;
+    String encodedPassword;
 
 
     @Inject
@@ -46,6 +47,7 @@ public class CloudantProducer {
 
     @Produces
     public Cloudant createCloudant() {
+        String password = PasswordUtil.passwordDecode(encodedPassword);
         BasicAuthenticator authenticator = new BasicAuthenticator.Builder()
                 .username(username)
                 .password(password)

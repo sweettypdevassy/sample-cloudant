@@ -12,7 +12,7 @@
 
 	<webApplication location="CloudantSample.war" contextRoot="/"/>
 	<variable name="cloudant.username" value="admin"/>
-    <variable name="cloudant.password" value="password"/>
+	<variable name="cloudant.password" value="{aes}AEEjCqvh7XAwDxrdYC6BUbqYlwqI8NAxRkWWWq7muxZu"/>
     <variable name="cloudant.dbname" value="testdb"/>
 
 </server>
